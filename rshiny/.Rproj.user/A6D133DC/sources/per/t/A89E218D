@@ -1,0 +1,24 @@
+{
+    "id": "A89E218D",
+    "path": "~/develop/electronWork/vue-example/rshiny/app/functions/DouhauUtils.R",
+    "project_path": "app/functions/DouhauUtils.R",
+    "type": "r_source",
+    "hash": "1336371388",
+    "contents": "",
+    "dirty": false,
+    "created": 1607832517745.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "cursorPosition": "202,64",
+        "scrollLine": "188"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1608641821,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1608641821943,
+    "read_only": false,
+    "read_only_alternatives": []
+}
