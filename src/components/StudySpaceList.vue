@@ -105,12 +105,16 @@ export default Vue.extend({
     },
     setStudySpace() {
       console.log(this.name)
-      this.studySpaces.push({ id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
-
-      //ipcRenderer.on('load-data-src-list', (event, arg) => {
-      //  console.log = arg
-      //})
-      ipcRenderer.send('add-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+      console.log( this.isStudyIdExist(this.id) )
+      if ( this.isStudyIdExist(this.id) === true ){
+          console.log( this.isStudyIdExist(this.id) )
+          const index = this.studySpaces.findIndex((x) => x.id === this.id)
+          this.studySpaces[index] = { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource}
+          ipcRenderer.send('alter-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+      } else if ( this.isStudyIdExist(this.id) === false ){
+          this.studySpaces.push({ id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+          ipcRenderer.send('add-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+      }
 
       this.dialog = false
     },
@@ -131,6 +135,14 @@ export default Vue.extend({
         this.description = ''
         this.dataSource = ''
 
+    },
+    isStudyIdExist(id: string){
+        const studySpaces_: string = this.studySpaces.filter(s => s['id'] === id )
+        if (studySpaces_.length === 0){
+          return false
+        } else {
+          return true
+        }
     },
     makeid() {
         let text = ''
