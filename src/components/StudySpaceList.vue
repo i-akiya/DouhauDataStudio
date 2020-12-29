@@ -101,21 +101,20 @@ export default Vue.extend({
           ipcRenderer.on('load-data-src-list', (event, arg) => {
             this.studySpaces = arg
           });
-          console.log(this.studySpaces)
     },
     setStudySpace() {
-      console.log(this.name)
-      this.studySpaces.push({ id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
-
-      //ipcRenderer.on('load-data-src-list', (event, arg) => {
-      //  console.log = arg
-      //})
-      ipcRenderer.send('add-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+      if ( this.isStudyIdExist(this.id) === true ){
+          const index = this.studySpaces.findIndex((x) => x.id === this.id)
+          this.studySpaces[index] = { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource}
+          ipcRenderer.send('alter-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+      } else if ( this.isStudyIdExist(this.id) === false ){
+          this.studySpaces.push({ id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+          ipcRenderer.send('add-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
+      }
 
       this.dialog = false
     },
     selectedStudySpace(studySpace) {
-        console.log(studySpace)
         this.dialog = true
         this.id = studySpace["id"]
         this.name = studySpace["name"]
@@ -131,6 +130,14 @@ export default Vue.extend({
         this.description = ''
         this.dataSource = ''
 
+    },
+    isStudyIdExist(id: string){
+        const studySpaces_: string = this.studySpaces.filter(s => s['id'] === id )
+        if (studySpaces_.length === 0){
+          return false
+        } else {
+          return true
+        }
     },
     makeid() {
         let text = ''
@@ -151,13 +158,7 @@ export default Vue.extend({
   },
 
   mounted() {
-    console.log( this.makeid() )
     this.getStudySpaces()
-    //ipcRenderer.on('asynchronous-reply', (event, arg) => {
-      // 受信時のコールバック関数
-    //console.log(arg) // pong
-    //});
-    // 非同期メッセージの送信
     ipcRenderer.send('load-data-src-list', 'ping')
   }
 })

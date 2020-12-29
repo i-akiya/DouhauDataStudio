@@ -277,10 +277,8 @@ if (isDevelopment) {
 // IPC asynchronous
 // Push load data-src-list
 ipcMain.on('load-data-src-list', (event, arg) => {
-  console.log(arg)
   try {
     event.reply('load-data-src-list', dataSrcList)
-    console.log(dataSrcList)
   } catch (err) {
     console.error(err.message)
   }
@@ -289,20 +287,25 @@ ipcMain.on('load-data-src-list', (event, arg) => {
 // Add data source
 ipcMain.on('add-data-src-list', (event, arg) => {
   dataSrcList.push(arg)
-  console.log(dataSrcList)
   const yaml = require('js-yaml');
   let yamlStr = yaml.safeDump(dataSrcList);
-  console.log(yamlStr)
+  fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8');
+})
+
+// Alter data source
+ipcMain.on('alter-data-src-list', (event, arg) => {
+  const index = dataSrcList.findIndex((x) => x['id'] === arg['id'])
+  dataSrcList[index] = arg
+  const yaml = require('js-yaml');
+  let yamlStr = yaml.safeDump(dataSrcList);
   fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8');
 })
 
 // Delete data source
 ipcMain.on('delete-data-src-list', (event, arg) => {
   dataSrcList = dataSrcList.filter(s => s['id'] !== arg )
-  console.log(dataSrcList)
   const yaml = require('js-yaml');
   let yamlStr = yaml.safeDump(dataSrcList);
-  console.log(yamlStr)
   fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8');
 })
 
