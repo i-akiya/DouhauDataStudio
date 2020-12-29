@@ -101,13 +101,9 @@ export default Vue.extend({
           ipcRenderer.on('load-data-src-list', (event, arg) => {
             this.studySpaces = arg
           });
-          console.log(this.studySpaces)
     },
     setStudySpace() {
-      console.log(this.name)
-      console.log( this.isStudyIdExist(this.id) )
       if ( this.isStudyIdExist(this.id) === true ){
-          console.log( this.isStudyIdExist(this.id) )
           const index = this.studySpaces.findIndex((x) => x.id === this.id)
           this.studySpaces[index] = { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource}
           ipcRenderer.send('alter-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
@@ -119,7 +115,6 @@ export default Vue.extend({
       this.dialog = false
     },
     selectedStudySpace(studySpace) {
-        console.log(studySpace)
         this.dialog = true
         this.id = studySpace["id"]
         this.name = studySpace["name"]
@@ -163,13 +158,7 @@ export default Vue.extend({
   },
 
   mounted() {
-    console.log( this.makeid() )
     this.getStudySpaces()
-    //ipcRenderer.on('asynchronous-reply', (event, arg) => {
-      // 受信時のコールバック関数
-    //console.log(arg) // pong
-    //});
-    // 非同期メッセージの送信
     ipcRenderer.send('load-data-src-list', 'ping')
   }
 })
