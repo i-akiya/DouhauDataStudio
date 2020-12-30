@@ -131,7 +131,10 @@ getTrialSummary <- function( baseDir ){
 
 
 
-
+#' Get dataset metadata as dataframe
+#'
+#' @param baseDir A string of base directory
+#' @return dataset metadata as an R dataframe
 getDatasetMetadata <- function( baseDir ){
         
         definefilelist <-  list.files(baseDir, pattern = ".*define.*\\.xml$", full.names = TRUE)
@@ -141,10 +144,76 @@ getDatasetMetadata <- function( baseDir ){
                 definexml <- definefilelist[1]
                 datasetMetadata <- R4DSXML::getDLMD(definexml) %>% 
                         select(c(IGD_SASDatasetName, IGD_Description, IGD_Class, IGD_Structure))
+                names(datasetMetadata) <- c("Domain", "Description", "Class", "Structure")
                 return(datasetMetadata)
                 
         }
 }
+
+#' Get variable metadata as dataframe
+#'
+#' @param baseDir A string of base directory
+#' @return variable metadata as an R dataframe
+getVariableMetadata <- function( baseDir ){
+        
+        definefilelist <-  list.files(baseDir, pattern = ".*define.*\\.xml$", full.names = TRUE)
+        if ( length(definefilelist) == 0 ){
+                return("Error: Define.xml is not found.")
+        }else{
+                definexml <- definefilelist[1]
+                variableMetadata <- R4DSXML::getVarMD(definexml) %>% 
+                        select(c(IGD_Name, ID_Name, ID_Label, IR_OrderNumber, IR_KeySequence, ID_DataType, ID_Length, ID_SignificantDigits, 
+                                 ID_CodeListOID ))
+                names(variableMetadata) <- c("Domain", "Valiable", "Label", "Order", "Keys", "Type", "Length", "Digits", 
+                                             "Codelist")
+                return(variableMetadata)
+                
+        }
+}
+
+#' Get value level metadata as dataframe
+#'
+#' @param baseDir A string of base directory
+#' @return value level metadata as an R dataframe
+getValueLevelMetadata <- function( baseDir ){
+        
+        definefilelist <-  list.files(baseDir, pattern = ".*define.*\\.xml$", full.names = TRUE)
+        if ( length(definefilelist) == 0 ){
+                return("Error: Define.xml is not found.")
+        }else{
+                definexml <- definefilelist[1]
+                valueLevelMetadata <- R4DSXML::getValMD(definexml) %>% 
+                        select(c(ValueListOID, ID_Name, ID_Label, IR_OrderNumber, ID_DataType, ID_Length, 
+                                 ID_SignificantDigits, ID_CodeListOID, ID_OriginType))
+                names(valueLevelMetadata) <- c("Value List", "Name", "Label", "Order", "Type", "Length", 
+                                               "Digits", "Codelist", "Origin")
+                return(valueLevelMetadata)
+                
+        }
+}
+
+
+#' Get codelist as dataframe
+#'
+#' @param baseDir A string of base directory
+#' @return codelist level metadata as an R dataframe
+getCodelist <- function( baseDir ){
+        
+        definefilelist <-  list.files(baseDir, pattern = ".*define.*\\.xml$", full.names = TRUE)
+        if ( length(definefilelist) == 0 ){
+                return("Error: Define.xml is not found.")
+        }else{
+                definexml <- definefilelist[1]
+                codelist <- R4DSXML::getCT(definexml) %>% 
+                        select(c(OID, Name, CodeListCode, CodedValue, Decode,
+                                ExtendedValue, ItemCode))
+                names(codelist) <- c("OID", "Name", "Codelist Code", "Coded Value", "Decode", "Extended", 
+                                               "Code")
+                return(codelist)
+                
+        }
+}
+
 
 getDefineXml <- function(baseDir){
         definefilelist <-  list.files(baseDir, pattern = ".*define.*\\.xml$", full.names = FALSE)

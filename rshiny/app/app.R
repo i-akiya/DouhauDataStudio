@@ -16,7 +16,6 @@ library(R4DSXML)
 library(R.utils)
 library(yaml)
 
-print(paste0(getwd(), "/functions/DouhauUtils.R"))
 source(paste0(getwd(), "/functions/DouhauUtils.R"))
 
 ui <- dashboardPage(dashboardHeader(title = "Douhua Data Studio"),
@@ -82,14 +81,13 @@ ui <- dashboardPage(dashboardHeader(title = "Douhua Data Studio"),
                         ),
                         tabItem(
                             tabName = "data_def",
-                            fluidRow(
-                            box(
-                                width = 12, status = "info",
-                                title = "Dataset Metadata",
-                                tableOutput('datasetMetadataTable')
+                            tabsetPanel(type = "tabs",
+                                        tabPanel("Dataset Metadata",  DT::dataTableOutput('datasetMetadataTable')),
+                                        tabPanel("Variable Metadata", DT::dataTableOutput('variableMetadataTable')),
+                                        tabPanel("Value Level Metadata", DT::dataTableOutput('valueLevelMetadataTable')),
+                                        tabPanel("Codelist", DT::dataTableOutput('codelistTable'))
+                            ) 
                             )
-                            )
-                        )
                     )))
 
 
@@ -178,7 +176,42 @@ server <- function(input, output, session) {
     output$tsTable <- renderTable(getTrialSummary(baseDir), width="100%")
     
     # generate trial summary table
-    output$datasetMetadataTable <- renderTable(getDatasetMetadata(baseDir), width="100%")
+    output$datasetMetadataTable <- DT::renderDataTable(DT::datatable(
+        getDatasetMetadata(baseDir),
+        filter = 'top',
+        extensions = 'Scroller',
+        options = list(scrollX = TRUE, scrollY = "calc(100vh - 285px)", scroller = TRUE, 
+                       paging = TRUE, pageLength = 10,
+                       autoWidth = TRUE),
+        ,callback = DT::JS("setTimeout(function() { table.draw(true); }, 500);")))
+    
+    output$variableMetadataTable <- DT::renderDataTable(DT::datatable(
+        getVariableMetadata(baseDir),
+        filter = 'top',
+        extensions = 'Scroller',
+        options = list(scrollX = TRUE, scrollY = "calc(100vh - 285px)", scroller = TRUE, 
+                       paging = TRUE, pageLength = 10,
+                       autoWidth = TRUE),
+        ,callback = DT::JS("setTimeout(function() { table.draw(true); }, 500);")))
+    
+    output$valueLevelMetadataTable <- DT::renderDataTable(DT::datatable(
+        getValueLevelMetadata(baseDir),
+        filter = 'top',
+        extensions = 'Scroller',
+        options = list(scrollX = TRUE, scrollY = "calc(100vh - 285px)", scroller = TRUE, 
+                       paging = TRUE, pageLength = 10,
+                       autoWidth = TRUE),
+        ,callback = DT::JS("setTimeout(function() { table.draw(true); }, 500);")))
+    
+    output$codelistTable <- DT::renderDataTable(DT::datatable(
+        getCodelist(baseDir),
+        filter = 'top',
+        extensions = 'Scroller',
+        options = list(scrollX = TRUE, scrollY = "calc(100vh - 285px)", scroller = TRUE, 
+                       paging = TRUE, pageLength = 10,
+                       autoWidth = TRUE, columnDefs = list(list(width = '100px', targets = c(3)))),
+        ,callback = DT::JS("setTimeout(function() { table.draw(true); }, 500);")))
+
 }
 
 # Run the application
