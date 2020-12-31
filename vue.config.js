@@ -18,7 +18,7 @@ module.exports = {
         extraFiles: [{
           "from": "rshiny",
           "to": "rshiny",
-          "filter": ["**/*", "!rshiny.Rproj"]
+          "filter": ["**/*", "!rshiny.Rproj", "!.RData"]
         }, ]
       },
       preload: 'src/preload.js',

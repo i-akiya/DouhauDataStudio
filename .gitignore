@@ -108,3 +108,4 @@ node_modules/*
 .Rproj.user
 rshiny/app/app.Rproj
 rshiny/app/.Rhistory
+rshiny/app/.RData
