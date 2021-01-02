@@ -53,7 +53,12 @@ const execa = require('execa');
 (async () => {
   try {
     //const { stdout } = await execa('Rscript', [path.join(path_rshiny, 'rshiny', 'start-shiny.R')])
-    const { stdout } = await execa('/usr/local/bin/Rscript', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny.R')])
+    if (process.platform === 'darwin'){
+      const { stdout } = await execa('Rscript', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny.R')])
+    } else if (process.platform === 'win32'){
+      const { stdout } = await execa('Rscript.exe', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny.R')])
+    }
+
   } catch (error) {
     log.error(error)
   }
@@ -75,11 +80,11 @@ var menu = Menu.buildFromTemplate([
           if (focusedWindow) {
             if (isDevelopment) {
               // Load the url of the dev server if in development mode
-              focusedWindow.loadURL('http://localhost:8080/')
+              focusedWindow.loadURL('http://localhost:8080/home')
             } else {
               // createProtocol('app')
               // Load the index.html when not in development
-              focusedWindow.loadURL('app://./index.html')
+              focusedWindow.loadURL('app://./home')
             }
           }
         }
@@ -117,19 +122,6 @@ var menu = Menu.buildFromTemplate([
         click: function(item, focusedWindow) {
           if (focusedWindow)
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-        }
-      },
-      {
-        label: 'Toggle Developer Tools',
-        accelerator: (function() {
-          if (process.platform == 'darwin')
-            return 'Alt+Command+I';
-          else
-            return 'Ctrl+Shift+I';
-        })(),
-        click: function(item, focusedWindow) {
-          if (focusedWindow)
-            focusedWindow.webContents.toggleDevTools();
         }
       },
     ]
