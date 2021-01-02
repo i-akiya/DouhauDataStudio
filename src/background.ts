@@ -12,16 +12,21 @@ const user_home = app.getPath('home')
 const ddsHome = user_home.toString().concat('/.douhau-data-studio')
 
 // log
-var log = require('electron-log');
-log.transports.file.level = 'info';
-log.transports.file.file = path.join(ddsHome, '/logs', 'douhau-data-studio.log')
+var log = require('electron-log')
+var today = new Date()
+var year = ('0000' + today.getFullYear()).slice(-4)
+var month = ('00' + (today.getMonth()+1)).slice(-2)
+var day = ('00' + today.getDate()).slice(-2)
+var fileName = "douhau-data-studio_" + year + month + day + '.log'
+log.transports.file.level = 'info'
+log.transports.file.file = path.join(ddsHome, '/logs', fileName)
 log.info("Start Douhau Data Studio")
 process.on('uncaughtException', function(err) {
-  log.error('electron:event:uncaughtException');
-  log.error(err);
-  log.error(err.stack);
-  app.quit();
-});
+  log.error('electron:event:uncaughtException')
+  log.error(err)
+  log.error(err.stack)
+  app.quit()
+})
 
 // check .douhau-data-studio directory
 
@@ -54,9 +59,9 @@ const execa = require('execa');
   try {
     //const { stdout } = await execa('Rscript', [path.join(path_rshiny, 'rshiny', 'start-shiny.R')])
     if (process.platform === 'darwin'){
-      const { stdout } = await execa('Rscript', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny.R')])
+      const { stdout } = await execa('Rscript', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny-mac.R')])
     } else if (process.platform === 'win32'){
-      const { stdout } = await execa('Rscript.exe', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny.R')])
+      const { stdout } = await execa('Rscript.exe', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny-win.R')])
     }
 
   } catch (error) {
@@ -192,7 +197,7 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1400,
-    height: 850,
+    height: 800,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
