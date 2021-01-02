@@ -162,7 +162,7 @@ try {
   dataSrcList = loadYamlFile(path.join(ddsHome, 'data-src-list.yaml'));
   // 送信元のチャンネル('asynchronous-reply')に返信する
 } catch (err) {
-  console.error(err.message);
+  log.error(err.message);
 }
 
 // About Dialog
@@ -243,7 +243,7 @@ app.on('ready', async () => {
     try {
       await installExtension(VUEJS_DEVTOOLS)
     } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString())
+      log.error('Vue Devtools failed to install:', e.toString())
     }
   }
   createWindow()
@@ -272,7 +272,7 @@ ipcMain.on('load-data-src-list', (event, arg) => {
   try {
     event.reply('load-data-src-list', dataSrcList)
   } catch (err) {
-    console.error(err.message)
+    log.error(err.message)
   }
 })
 
@@ -300,27 +300,3 @@ ipcMain.on('delete-data-src-list', (event, arg) => {
   let yamlStr = yaml.safeDump(dataSrcList);
   fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8');
 })
-
-
-
-
-//const target = dataSrcList.find((dataSrc) => {
-//    return (dataSrc.id === '0EcERDl5kx5l');
-//});
-
-//try {
-//  if ( Object.keys(target).length > 0 ){
-//      console.log( target )
-//  }
-//} catch(err) {
-//      console.log("NOT Found")
-//}
-
-
-//const aa_1 = { id: 'tZ1bxPFZJBVx',
-//              name: 'study_z',
-//              description: 'description z',
-//              dataSource: '/Users/ippei/develop/data/zcdisc/sdtm/'
-//              }
-//dataSrcList.push(aa_1)
-//console.log(dataSrcList)
