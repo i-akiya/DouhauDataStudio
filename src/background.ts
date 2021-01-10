@@ -48,6 +48,7 @@ if (!fs.existsSync(rshiny_dir_dds_user_home)) {
   try {
     fs.copySync(path_rshiny, rshiny_dir_dds_user_home)
     log.info('Copy rshiny directory to under the user home directory ".douhau-data-studio".')
+    fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), "", 'utf8')
   } catch (err) {
     log.error(err)
   }
@@ -149,7 +150,27 @@ var menu = Menu.buildFromTemplate([
           }
         }
       },
-      { label: 'Donate' },
+      {
+        label: 'User Guide',
+        click: function(item, focusedWindow) {
+          const { shell } = require('electron')
+          shell.openExternal('https://i-akiya.github.io/DouhauDataStudio-UserGuide/')
+        }
+      },
+      {
+        label: 'Website',
+        click: function(item, focusedWindow) {
+          const { shell } = require('electron')
+          shell.openExternal('https://i-akiya.github.io/DouhauDataStudio-Website/')
+        }
+      },
+      {
+        label: 'Community',
+        click: function(item, focusedWindow) {
+          const { shell } = require('electron')
+          shell.openExternal('https://gitter.im/douhau-data-studio/community#')
+        }
+      },
     ]
   },
 ]);
@@ -157,17 +178,22 @@ Menu.setApplicationMenu(menu);
 
 // Load YAML
 function loadYamlFile(filename) {
-  const yaml = require('js-yaml');
+  const yaml = require('js-yaml')
   const yamlText = fs.readFileSync(filename, 'utf8')
-  return yaml.safeLoad(yamlText);
+  log.info("yaml:"+yaml.safeLoad(yamlText))
+  return yaml.safeLoad(yamlText)
 }
 // Load data-src-list.yaml
 var dataSrcList
 try {
-  dataSrcList = loadYamlFile(path.join(ddsHome, 'data-src-list.yaml'));
-  // 送信元のチャンネル('asynchronous-reply')に返信する
+  const temp_data_source = loadYamlFile(path.join(ddsHome, 'data-src-list.yaml'))
+  if ( temp_data_source === undefined ){
+    dataSrcList = []
+  } else {
+    dataSrcList = temp_data_source
+  }
 } catch (err) {
-  log.error(err.message);
+  log.error(err.message)
 }
 
 // About Dialog
@@ -272,7 +298,7 @@ if (isDevelopment) {
 
 
 // IPC asynchronous
-// Push load data-src-list
+// load data-src-list
 ipcMain.on('load-data-src-list', (event, arg) => {
   try {
     event.reply('load-data-src-list', dataSrcList)
@@ -284,24 +310,24 @@ ipcMain.on('load-data-src-list', (event, arg) => {
 // Add data source
 ipcMain.on('add-data-src-list', (event, arg) => {
   dataSrcList.push(arg)
-  const yaml = require('js-yaml');
-  let yamlStr = yaml.safeDump(dataSrcList);
-  fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8');
+  const yaml = require('js-yaml')
+  let yamlStr = yaml.safeDump(dataSrcList)
+  fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8')
 })
 
 // Alter data source
 ipcMain.on('alter-data-src-list', (event, arg) => {
   const index = dataSrcList.findIndex((x) => x['id'] === arg['id'])
   dataSrcList[index] = arg
-  const yaml = require('js-yaml');
-  let yamlStr = yaml.safeDump(dataSrcList);
-  fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8');
+  const yaml = require('js-yaml')
+  let yamlStr = yaml.safeDump(dataSrcList)
+  fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8')
 })
 
 // Delete data source
 ipcMain.on('delete-data-src-list', (event, arg) => {
   dataSrcList = dataSrcList.filter(s => s['id'] !== arg )
-  const yaml = require('js-yaml');
-  let yamlStr = yaml.safeDump(dataSrcList);
-  fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8');
+  const yaml = require('js-yaml')
+  let yamlStr = yaml.safeDump(dataSrcList)
+  fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), yamlStr, 'utf8')
 })

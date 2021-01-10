@@ -50,6 +50,7 @@
             <!-- Data Source -->
             <v-col cols="12">
               <v-text-field v-model="dataSource" :rules="dataSourceRules" label="Location *" required></v-text-field>
+              <p>Forward slush "/" must be used for the path separator even though windows platform.</p>
             </v-col>
           </v-row>
         </v-container>
