@@ -102,8 +102,8 @@ var menu = Menu.buildFromTemplate([
   {
     label: 'Edit',
     submenu: [
-      { label: 'Copy', accelerator: 'CmdOrCtrl+C' },
-      { label: 'Paste', accelerator: 'CmdOrCtrl+V' },
+      { label: 'Copy', role: 'copy', accelerator: 'CmdOrCtrl+C' },
+      { label: 'Paste', role: 'paste', accelerator: 'CmdOrCtrl+V' },
     ]
   },
   {
