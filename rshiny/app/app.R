@@ -99,7 +99,8 @@ server <- function(input, output, session) {
         
         if (!is.null(query[['id']])) {
             output$dsname1 <- renderText(query[['id']])
-            output$dsname2 <- renderText(paste0(getUseHomeDir(), "/.douhau-data-studio.yaml"))
+            #output$dsname2 <- renderText(paste0(getUserHomeDir(), "/.douhau-data-studio/data-src-list.yaml"))
+            print(query[['id']])
             baseDir <<- getDataDir(query[['id']])
         }
         
