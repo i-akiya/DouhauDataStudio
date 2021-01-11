@@ -44,11 +44,18 @@ if (isDevelopment) {
   path_rshiny = path.join(dir_rshiny_build_app.join("/").toString(), 'rshiny')
 }
 
+// check data-src-list.yaml
+const dataSrcListFile = path.join(ddsHome, 'data-src-list.yaml')
+if(!fs.existsSync(dataSrcListFile)){
+    fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), "", 'utf8')
+    log.info('Create blank data-src-list.yaml')
+}
+
+// copy rshiny dir
 if (!fs.existsSync(rshiny_dir_dds_user_home)) {
   try {
     fs.copySync(path_rshiny, rshiny_dir_dds_user_home)
     log.info('Copy rshiny directory to under the user home directory ".douhau-data-studio".')
-    fs.writeFileSync(path.join(ddsHome, 'data-src-list.yaml'), "", 'utf8')
   } catch (err) {
     log.error(err)
   }
