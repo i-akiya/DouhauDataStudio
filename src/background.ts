@@ -86,11 +86,11 @@ var menu = Menu.buildFromTemplate([
           if (focusedWindow) {
             if (isDevelopment) {
               // Load the url of the dev server if in development mode
-              focusedWindow.loadURL('http://localhost:8080/home')
+              focusedWindow.loadURL('http://localhost:8080/index.html')
             } else {
               // createProtocol('app')
               // Load the index.html when not in development
-              focusedWindow.loadURL('app://./home')
+              focusedWindow.loadURL('app://./index.html')
             }
           }
         }
@@ -130,6 +130,19 @@ var menu = Menu.buildFromTemplate([
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
         }
       },
+      // {
+      //   label: 'Toggle Developer Tools',
+      //   accelerator: (function() {
+      //     if (process.platform == 'darwin')
+      //       return 'Alt+Command+I';
+      //     else
+      //       return 'Ctrl+Shift+I';
+      //   })(),
+      //   click: function(item, focusedWindow) {
+      //     if (focusedWindow)
+      //       focusedWindow.webContents.toggleDevTools();
+      //   }
+      // },
     ]
   },
   {
@@ -199,6 +212,7 @@ try {
 // About Dialog
 function showAboutDialog() {
   const aboutDialog = new BrowserWindow({ width: 800, height: 600 })
+  aboutDialog.setMenuBarVisibility(false)
   if (isDevelopment) {
     // Load the url of the dev server if in development mode
     aboutDialog.loadURL('http://localhost:8080/about.html')
@@ -240,7 +254,7 @@ function createWindow() {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./home')
+    win.loadURL('app://./index.html')
   }
 
   win.on('closed', () => {

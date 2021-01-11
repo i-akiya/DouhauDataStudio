@@ -106,9 +106,24 @@ export default Vue.extend({
     setStudySpace() {
       if ( this.isStudyIdExist(this.id) === true ){
           const index = this.studySpaces.findIndex((x) => x.id === this.id)
+
+          if ( this.dataSource.match(/.*\/$/) ){
+              while( this.dataSource.match(/.*\/$/) ) {
+                  this.dataSource = this.dataSource.replace(/(.*)(\/+$)/, '$1')
+              }
+          }
+          console.log( this.dataSource )
           this.studySpaces[index] = { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource}
           ipcRenderer.send('alter-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
       } else if ( this.isStudyIdExist(this.id) === false ){
+          const index = this.studySpaces.findIndex((x) => x.id === this.id)
+
+          if ( this.dataSource.match(/.*\/$/) ){
+            while( this.dataSource.match(/.*\/$/) ) {
+                this.dataSource = this.dataSource.replace(/(.*)(\/+$)/, '$1')
+              }
+          }
+          console.log( this.dataSource )
           this.studySpaces.push({ id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
           ipcRenderer.send('add-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
       }
