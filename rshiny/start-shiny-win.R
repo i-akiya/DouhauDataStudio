@@ -1,7 +1,6 @@
 # Script that starts the shiny webserver
 # Parameters are supplied using environment variables
 
-#.libPaths("C:/Users/ippei/Documents/R/win-library/4.0")
 .libPaths( Sys.getenv()['R_LIBS_USER'][[1]] )
 
 shiny::runApp(
