@@ -99,11 +99,11 @@ server <- function(input, output, session) {
         
         if (!is.null(query[['id']])) {
             output$dsname1 <- renderText(query[['id']])
-            output$dsname2 <- renderText(paste0(path.expand("~"), "/.douhau-data-studio.yaml"))
+            #output$dsname2 <- renderText(paste0(getUserHomeDir(), "/.douhau-data-studio/data-src-list.yaml"))
+            print(query[['id']])
             baseDir <<- getDataDir(query[['id']])
-        }else{
-            baseDir <<- "/Users/ippei/develop/data/cdisc/sdtm"
         }
+        
         studyInfo <<- getStudyInfo(baseDir)
         flist <<- getDatasetFileList(baseDir)
         length.flist <<- length(flist)

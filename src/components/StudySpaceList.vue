@@ -50,6 +50,7 @@
             <!-- Data Source -->
             <v-col cols="12">
               <v-text-field v-model="dataSource" :rules="dataSourceRules" label="Location *" required></v-text-field>
+              <p>Forward slush "/" must be used for the path separator even though windows platform.</p>
             </v-col>
           </v-row>
         </v-container>
@@ -105,9 +106,24 @@ export default Vue.extend({
     setStudySpace() {
       if ( this.isStudyIdExist(this.id) === true ){
           const index = this.studySpaces.findIndex((x) => x.id === this.id)
+
+          if ( this.dataSource.match(/.*\/$/) ){
+              while( this.dataSource.match(/.*\/$/) ) {
+                  this.dataSource = this.dataSource.replace(/(.*)(\/+$)/, '$1')
+              }
+          }
+          console.log( this.dataSource )
           this.studySpaces[index] = { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource}
           ipcRenderer.send('alter-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
       } else if ( this.isStudyIdExist(this.id) === false ){
+          const index = this.studySpaces.findIndex((x) => x.id === this.id)
+
+          if ( this.dataSource.match(/.*\/$/) ){
+            while( this.dataSource.match(/.*\/$/) ) {
+                this.dataSource = this.dataSource.replace(/(.*)(\/+$)/, '$1')
+              }
+          }
+          console.log( this.dataSource )
           this.studySpaces.push({ id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
           ipcRenderer.send('add-data-src-list', { id:this.id, name:this.name, description:this.description, dataSource:this.dataSource})
       }

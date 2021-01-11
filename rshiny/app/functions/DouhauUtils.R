@@ -1,5 +1,18 @@
+getUserHomeDir <- function(){
+        osInfo <- Sys.info()['sysname'][[1]]
+        if(osInfo == 'Darwin'){
+                useHomeDir <- path.expand("~")
+        } else {
+                tempUseHomeDir <- str_split( Sys.getenv()['HOME'][[1]], "\\\\")[[1]] %>% head(-1)
+                useHomeDir <- paste(tempUseHomeDir, collapse = "/")
+                print(useHomeDir)
+        }
+        return(useHomeDir)
+}
+
+
 getDataDir <- function(studySpaceId){
-        yamlPath <- paste0(path.expand("~"), "/.douhau-data-studio/data-src-list.yaml")
+        yamlPath <- paste0(getUserHomeDir(), "/.douhau-data-studio/data-src-list.yaml")
         dataSrcList <- read_yaml(yamlPath)
         dataDir <- ""
         
@@ -216,6 +229,7 @@ getCodelist <- function( baseDir ){
 
 
 getDefineXml <- function(baseDir){
+        print(baseDir)
         definefilelist <-  list.files(baseDir, pattern = ".*define.*\\.xml$", full.names = FALSE)
         if ( length(definefilelist) > 0 ){
                 return( definefilelist[1] )
