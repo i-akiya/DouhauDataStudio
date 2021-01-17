@@ -67,7 +67,7 @@ const execa = require('execa');
   try {
     //const { stdout } = await execa('Rscript', [path.join(path_rshiny, 'rshiny', 'start-shiny.R')])
     if (process.platform === 'darwin'){
-      const { stdout } = await execa('Rscript', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny-mac.R')])
+      const { stdout } = await execa('/Library/Frameworks/R.framework/Versions/Current/Resources/bin/Rscript', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny-mac.R')])
     } else if (process.platform === 'win32'){
       const { stdout } = await execa('Rscript', [path.join(user_home.toString(), '.douhau-data-studio', 'rshiny', 'start-shiny-win.R')])
     }
