@@ -28,6 +28,7 @@ Douhau Data Studio is composed with R Shiny, so it is necessary to set up R and 
 * [R4DSXML](https://github.com/i-akiya/R4DSXML)
 * [R.utils](https://cran.r-project.org/web/packages/R.utils/index.html)
 * [yaml](https://cran.r-project.org/web/packages/yaml/index.html)
+* [DT](https://github.com/rstudio/DT)
 
 ### License
 MIT License  
