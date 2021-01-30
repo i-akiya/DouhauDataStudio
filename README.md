@@ -1,5 +1,5 @@
 # Douhau Data Studio
-Douhau Data Studio is a data browser desktop application for [CDISC SDTM](https://www.cdisc.org/standards/foundational/sdtm), and support both [SAS XPORT v5](http://support.sas.com/techsup/technote/ts140.pdf) and [CDSIC Dataset-XML](https://www.cdisc.org/standards/data-exchange/dataset-xml) file format.  
+Douhau Data Studio is a data browser desktop application for [CDISC SDTM](https://www.cdisc.org/standards/foundational/sdtm), and support both [SAS XPORT v5](http://support.sas.com/techsup/technote/ts140.pdf) and [CDISC Dataset-XML](https://www.cdisc.org/standards/data-exchange/dataset-xml) file format.  
 Douhau Data Studio has the data grid without pagination that provides non-interrupt and comfortable usability for your clinical data browsing.
 
 # Features
