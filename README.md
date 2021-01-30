@@ -14,7 +14,7 @@ Douhau Data Studio is build with [Electron](https://www.electronjs.org) and macO
 
 # Related Links
 * [Douhau Data Studio Website](https://i-akiya.github.io/DouhauDataStudio-Website/)
-* [User's Guide](https://i-akiya.github.io/DouhauDataStudio-Website/)
+* [User's Guide](https://i-akiya.github.io/DouhauDataStudio-UserGuide/)
 * [Community](https://gitter.im/douhau-data-studio/community)
 
 ## Prerequirments
